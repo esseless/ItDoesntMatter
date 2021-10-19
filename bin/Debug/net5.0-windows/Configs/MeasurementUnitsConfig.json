@@ -1,0 +1,62 @@
+[
+  {
+    "metricUnits": [
+      {
+        "unit": "micrograms (mcg)",
+        "conversionFactor": 0.000000001,
+        "symbol": "mcg"
+      },
+      {
+        "unit": "milligrams (mg)",
+        "conversionFactor": 0.000001,
+        "symbol": "mg"
+      },
+      {
+        "unit": "grams (g)",
+        "conversionFactor": 0.001,
+        "symbol": "g"
+      },
+      {
+        "unit": "kilogram (kg)",
+        "conversionFactor": 1,
+        "symbol": "kg"
+      },
+      {
+        "unit": "tonnes (t)",
+        "conversionFactor": 1000,
+        "symbol": "t"
+      },
+      {
+        "unit": "kilotonnes (kt)",
+        "conversionFactor": 1000000,
+        "symbol": "kt"
+      },
+      {
+        "unit": "megatonnes (Mt)",
+        "conversionFactor": 100000000,
+        "symbol": "Mt"
+      }
+    ],
+    "property": 0
+  },
+  {
+    "property": 1,
+    "metricUnits": [
+      {
+        "unit": "decinewtons (dN)",
+        "conversionFactor": 0.1,
+        "symbol": "dN"
+      },
+      {
+        "unit": "Newtons (N)",
+        "conversionFactor": 1,
+        "symbol": "N"
+      },
+      {
+        "unit": "decanewtons (daN)",
+        "conversionFactor": 10,
+        "symbol": "daN"
+      }
+    ]
+  }
+]

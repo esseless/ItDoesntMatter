@@ -1,0 +1,16 @@
+[
+  {
+    "sourceHelperText": "Enter the mass",
+    "targetHelperText": "Force Weight = Mass x Gravitational acceleration (ms^-2)",
+    "sourceMetricHint": "Choose a metric unit for Mass",
+    "targetMetricHint": "Choose a metric unit for Weight",
+
+  },
+  {
+    "sourceHelperText": "Enter the weight",
+    "targetHelperText": "Mass = Force Weight/Gravitational acceleration (ms^-2)",
+    "sourceMetricHint": "Choose a metric unit for Weight",
+    "targetMetricHint": "Choose a metric unit for Mass"
+
+  }
+]

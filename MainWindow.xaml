@@ -1,0 +1,138 @@
+﻿<!--Author:       Sharanya Sargur, Bhupinder Singh, Keval Patel
+Created On:       07/06/2021
+Last Modified On: 11/06/2021
+Copy Rights:      Conestoga College
+Description:      Includes the template to show the controls for manipulating the units of measurement-->
+<Window x:Class="It_Doesnt_Matter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="It doesn't Matter!" Height="300" Width="670" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ControlTemplate x:Key="errorTemplate">
+            <Border BorderThickness="0 0 0 2" BorderBrush="OrangeRed">
+                <Grid>
+                    <AdornedElementPlaceholder>
+                        <TextBlock Text="{Binding ErrorContent}" Padding="8 0" Foreground="OrangeRed" 
+                                   VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    </AdornedElementPlaceholder>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <DockPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 12 24 0">
+                <TextBlock Name="SourceMass" Style="{StaticResource MaterialDesignSubtitle2TextBlock}" 
+                           Text="Calculate Mass" VerticalAlignment="Center" Padding="0 0 8 0"/>
+                <ToggleButton Name="SwitchUnits" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                              ToolTip="Toggle Units" IsChecked="True" Cursor="Hand"
+                              Click="SwitchUnits_Click"/>
+                <TextBlock Name="SourceWeight" Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                           Text="Calculate Weight" VerticalAlignment="Center" Padding="8 0 0 0"/>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="24">
+                <ComboBox Name="SourceMetrics" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          materialDesign:HintAssist.Hint="Choose a metric unit for Mass" 
+                          materialDesign:TextFieldAssist.HasClearButton="False" 
+                          Width="240" Height="48" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          MaxDropDownHeight="100" SelectionChanged="SourceMetrics_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Unit}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ComboBox Name="TargetMetrics" Width="240" Height="48"
+                          materialDesign:HintAssist.Hint="Choose a metric unit for Weight" 
+                          materialDesign:TextFieldAssist.HasClearButton="False"
+                          HorizontalAlignment="Right" MaxDropDownHeight="100" 
+                          SelectionChanged="TargetMetrics_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=SourceMeasure}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=IsEnabled, ElementName=SourceMeasure}" Value="False">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Text, ElementName=SourceMeasure}" Value="">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="24">
+                <TextBox Name="SourceMeasure" AcceptsReturn="True" HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
+                         Padding="8 6" FontSize="20" materialDesign:HintAssist.HelperText="Enter the mass" Height="50" Width="240" 
+                         Margin="0 0 45 0" TextChanged="SourceMeasure_TextChanged"
+                         materialDesign:TextFieldAssist.SuffixText="{Binding ElementName=SourceMetrics, Path=SelectedItem.Symbol}"
+                         Text="{Binding Measure, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                         Validation.ErrorTemplate="{StaticResource errorTemplate}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=SelectedIndex, ElementName=SourceMetrics}" Value="-1">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button Name="Convert" Width="37" Height="38" ToolTip="Find weight" Click="Convert_Click" Padding="0">
+                    <materialDesign:PackIcon Kind="ArrowRightBoldCircle" Height="35" Width="36" VerticalAlignment="Center" 
+                                             HorizontalAlignment="Center"/>
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=SourceMeasure}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Text, ElementName=SourceMeasure}" Value="">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=SelectedIndex, ElementName=TargetMetrics}" Value="-1">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=SelectedIndex, ElementName=SourceMetrics}" Value="-1">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <TextBox Name="TargetMeasure" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalAlignment="Right" 
+                         Focusable="False" Cursor="Arrow" VerticalContentAlignment="Bottom" Padding="8 6" FontSize="20" 
+                         Height="50" Width="244" materialDesign:HintAssist.HelperTextFontSize="9"
+                         materialDesign:HintAssist.HelperText="Force Weight = Mass (kg) x Gravitational acceleration (ms^-2)"
+                         materialDesign:TextFieldAssist.SuffixText="{Binding ElementName=TargetMetrics, Path=SelectedItem.Symbol}"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Name="AbnormalityIndicator" Margin="24 0" Width="244" Foreground="OrangeRed" VerticalAlignment="Top" 
+                           HorizontalAlignment="Right" Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>
